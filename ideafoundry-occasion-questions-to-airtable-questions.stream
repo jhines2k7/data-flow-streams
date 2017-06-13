@@ -21,7 +21,7 @@ create
         
         | modify-order-question-payload: scriptable-transform 
             --scriptable-transformer.language=js
-            --scriptable-transformer.script='function modifyQuestionBody(t){var e=JSON.parse(t),a=new Date(e.attributes.created_at),r=new Date(e.attributes.updated_at);return{id:e.id,record_id:e.attributes.record_id,question:e.attributes.attribute_title,answer:e.attributes.value,created_at:a.getMonth()+1+"/"+a.getDate()+"/"+a.getFullYear(),updated_at:r.getMonth()+1+"/"+r.getDate()+"/"+r.getFullYear()}}modifyQuestionBody(payload);'
+            --scriptable-transformer.script=function modifyQuestionBody(t){var e=JSON.parse(t),a=new Date(e.attributes.created_at),r=new Date(e.attributes.updated_at);return{id:e.id,record_id:e.attributes.record_id,question:e.attributes.attribute_title,answer:e.attributes.value,created_at:a.getMonth()+1+\"/\"+a.getDate()+\"/\"+a.getFullYear(),updated_at:r.getMonth()+1+\"/\"+r.getDate()+\"/\"+r.getFullYear()}}modifyQuestionBody(payload);
         
         | assign-order-id: scriptable-transform
             --scriptable-transformer.language=js
