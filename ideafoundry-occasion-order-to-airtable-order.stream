@@ -3,7 +3,7 @@ create
     --definition "
         :transformedoccasionapiresults
         
-        > transform
+        > extract-order-object: transform
             --transformer.expression='#jsonPath(payload, \"$.order\")'
         
         | scriptable-transform
