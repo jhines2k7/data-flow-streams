@@ -3,11 +3,11 @@ create
     --definition "
         :transformedoccasionapiresults
 
-        | add-header-with-order-id-value: header-enricher
-            --header.enricher.headers=order_id=#jsonPath(payload, '$.order.id')
+        > add-header-with-order-id-value: header-enricher
+            --header.enricher.headers=order_id=payload.order.id
         
         | split-order-question-links: splitter
-            --splitter.expression=#jsonPath(payload, '$.links.[*]')
+            --splitter.expression='#jsonPath(payload, \"$.links.[*]\")'
         
         | filter-out-the-attibute_values-link: filter
             --filter.expression=payload.contains('attribute_values')

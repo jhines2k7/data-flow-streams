@@ -3,12 +3,16 @@ create
     --definition "
         :transformedoccasionapiresults
         
-        | transform
-            --transformer.expression=#jsonPath(payload, '$.order')
+        > transform
+            --transformer.expression='#jsonPath(payload, \"$.order\")'
         
         | scriptable-transform
             --scriptable-transformer.language=js
+<<<<<<< HEAD
             --scriptable-transformer.script='function prepPayloadForHttpClient(e){var t=JSON.parse(e);null===t.coupon_amount&&(t.coupon_amount=0),null===t.coupon_description&&(t.coupon_description="No description"),t.price=parseInt(t.price),t.tax=parseInt(t.tax),t.tax_percentage=parseInt(t.tax_percentage),t.balance=parseInt(t.balance);var a=new Date(t.created_at),n=new Date(t.updated_at),p=a.getMonth()+1,r=n.getMonth()+1,o=p+\"/\"+a.getDate()+\"/\"+a.getFullYear(),c=r+\"/\"+n.getDate()+\"/\"+n.getFullYear();return t.created_at=o,t.updated_at=c,JSON.stringify({fields:t})}prepPayloadForHttpClient(payload)'
+=======
+            --scriptable-transformer.script='function prepPayloadForHttpClient(e){var t=JSON.parse(e);null===t.coupon_amount&&(t.coupon_amount=0),null===t.coupon_description&&(t.coupon_description=\"No description\"),t.price=parseInt(t.price),t.tax=parseInt(t.tax),t.tax_percentage=parseInt(t.tax_percentage),t.balance=parseInt(t.balance);var a=new Date(t.created_at),n=new Date(t.updated_at),p=a.getMonth()+1,r=n.getMonth()+1,o=p+\"/\"+a.getDate()+\"/\"+a.getFullYear(),c=r+\"/\"+n.getDate()+\"/\"+n.getFullYear();return t.created_at=o,t.updated_at=c,JSON.stringify({fields:t})}prepPayloadForHttpClient(payload)'
+>>>>>>> 91b4ccb11396fdaf3ec9be55d0f9a5d089dbcfe8
         
         | httpclient
             --httpclient.url-expression='https://api.airtable.com/v0/app6whb4mczhoeDuH/Orders?api_key=${airtable.api.credentials}'
