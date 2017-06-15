@@ -14,7 +14,7 @@ stream create
 
         | call-occasion-api: httpclient
             --httpclient.url-expression=payload
-            --httpclient.headers-expression={'Authorization':'Basic ZmEyNGNiOWE3NGUyNDY5ZTBjYWJjMTdlMTIwODhmNmYyMmQwOGVkZDowN2I2ZTU1NTIyZjc0ZTlmYmRhZmFjN2MzMzdlZTk5OQ==','Content-Type':'application/json'}
+            --httpclient.headers-expression={'Authorization':'Basic ${occasion.api.credentials}','Content-Type':'application/json'}
 
         | split-order-question-objects: splitter
             --splitter.expression='#jsonPath(payload, \"$.data.[*]\")'
