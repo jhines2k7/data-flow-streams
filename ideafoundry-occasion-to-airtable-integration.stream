@@ -5,7 +5,7 @@ stream create
             --mail.url=imaps://mailappstarter:${email.password}@imap.gmail.com/INBOX 
         
         | extract-verification-code: scriptable-transform 
-            --scriptable-transformer.language=js --scriptable-transformer.script=/\d{2}[A-Z][\dA-Z]{3}/.exec(payload)[0] 
+            --scriptable-transformer.language=js --scriptable-transformer.script=/^[A-Z0-9]{6,}$/.exec(payload)[0] 
         
         | httpclient 
             --httpclient.url-expression='https://app.getoccasion.com/api/v1/orders?filter[verification_code]='+payload --httpclient.headers-expression={'Authorization':'Basic ${occasion.credentials}','Content-Type':'application/json'} 
