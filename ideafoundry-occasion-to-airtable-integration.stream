@@ -13,5 +13,5 @@ stream create
         | modify-occasion-api-response: scriptable-transform 
             --scriptable-transformer.language=js --scriptable-transformer.script='function transformOccasionJsonResponse(r){var s=[],n=JSON.parse(r).data[0],e=n.relationships,o=n.attributes,i={order:{},links:[]};i.order.id=n.id;for(var a in e)e.hasOwnProperty(a)&&s.push(e[a].links.self);i.links=s;for(var t in o)o.hasOwnProperty(t)&&t&&(i.order[t]=o[t]);return delete i.order.session_identifier,JSON.stringify(i)}transformOccasionJsonResponse(payload);' 
         
-        > :transformedoccasionapiresults9
-    " --deploy
+        > :transformedoccasionapiresults11
+    "

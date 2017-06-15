@@ -1,35 +1,39 @@
-create
+stream create
     --name ideafoundry-occasion-questions-to-airtable_v1
     --definition "
-        :transformedoccasionapiresults
+        :transformedoccasionapiresults11
 
         > add-header-with-order-id-value: header-enricher
             --header.enricher.headers=order_id=payload.order.id
         
         | split-order-question-links: splitter
             --splitter.expression='#jsonPath(payload, \"$.links.[*]\")'
-        
+
         | filter-out-the-attibute_values-link: filter
-            --filter.expression=payload.contains('attribute_values')
-        
+            --filter.expression='payload.contains(\"attribute_values\")'
+
         | call-occasion-api: httpclient
             --httpclient.url-expression=payload
-            --httpclient.headers-expression={'Authorization':'Basic ${occasion.api.credentials}','Content-Type':'application/json'}
-        
+            --httpclient.headers-expression={'Authorization':'Basic ZmEyNGNiOWE3NGUyNDY5ZTBjYWJjMTdlMTIwODhmNmYyMmQwOGVkZDowN2I2ZTU1NTIyZjc0ZTlmYmRhZmFjN2MzMzdlZTk5OQ==','Content-Type':'application/json'}
+
         | split-order-question-objects: splitter
-            --splitter.expression=#jsonPath(payload, '$.data.[*]'
-        
+            --splitter.expression='#jsonPath(payload, \"$.data.[*]\")'
+
+        | convert-question-map-to-json: scriptable-transform
+            --scriptable-transformer.language=groovy 
+            --scriptable-transformer.script='def builder=new groovy.json.JsonBuilder();def root=builder payload;builder.toString()'
+
         | modify-order-question-payload: scriptable-transform 
             --scriptable-transformer.language=js
-            --scriptable-transformer.script=function modifyQuestionBody(t){var e=JSON.parse(t),a=new Date(e.attributes.created_at),r=new Date(e.attributes.updated_at);return{id:e.id,record_id:e.attributes.record_id,question:e.attributes.attribute_title,answer:e.attributes.value,created_at:a.getMonth()+1+\"/\"+a.getDate()+\"/\"+a.getFullYear(),updated_at:r.getMonth()+1+\"/\"+r.getDate()+\"/\"+r.getFullYear()}}modifyQuestionBody(payload);
-        
+            --scriptable-transformer.script='function modifyQuestionBody(t){var e=JSON.parse(t),a=new Date(e.attributes.created_at),r=new Date(e.attributes.updated_at);return JSON.stringify({id:e.id,record_id:e.attributes.record_id,question:e.attributes.attribute_title,answer:e.attributes.value,created_at:a.getMonth()+1+\"/\"+a.getDate()+\"/\"+a.getFullYear(),updated_at:r.getMonth()+1+\"/\"+r.getDate()+\"/\"+r.getFullYear()})}modifyQuestionBody(payload);'
+
         | assign-order-id: scriptable-transform
             --scriptable-transformer.language=js
-            --scriptable-transformer.script=function addOrderIDToQuestion(r,d){var e=JSON.parse(r);return e.order_id=d,JSON.stringify(e)}addOrderIDToQuestion(payload,headers.order_id);
+            --scriptable-transformer.script='function addOrderIDToQuestion(r,d){var e=JSON.parse(r);return e.order_id=d,JSON.stringify(e)}addOrderIDToQuestion(payload,headers.order_id);'
         
         | call-airtable-api: httpclient
             --httpclient.url-expression='https://api.airtable.com/v0/app6whb4mczhoeDuH/Questions?api_key=${airtable.api.credentials}'
             --httpclient.http-method=POST
-        
+
         | log
-    "
+    "    
