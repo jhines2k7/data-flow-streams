@@ -1,7 +1,7 @@
 stream create
     --name ideafoundry-occasion-questions-to-airtable_v1
     --definition "
-        :transformedoccasionapiresults11
+        :transformedoccasionapiresults
 
         > add-header-with-order-id-value: header-enricher
             --header.enricher.headers=order_id=payload.order.id
