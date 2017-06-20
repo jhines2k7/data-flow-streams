@@ -1,0 +1,15 @@
+stream create --name prep-payload-for-airtable-question_v1 
+    --definition "
+        :payloadforairtable
+
+        > prep-payload-for-airtable: scriptable-transform
+            --scriptable-transformer.language=js
+            --scriptable-transformer.script='function prepQuestionPayloadForAirtable(r){var a=JSON.parse(r);return JSON.stringify({fields:a})}prepQuestionPayloadForAirtable(payload);'
+
+        | call-airtable-api: httpclient
+            --httpclient.url='https://api.airtable.com/v0/app6whb4mczhoeDuH/Questions?api_key=${airtable.api.credentials}'
+            --httpclient.http-method=POST         
+            --httpclient.headers-expression='{\"Content-Type\": \"application/json\"}'                
+        
+        | log
+    "
