@@ -4,7 +4,7 @@ stream create
         :transformedoccasionapiresults
 
         > add-header-with-order-id-value: header-enricher
-            --header.enricher.headers=order_id=payload.order.id
+            --header.enricher.headers='order_id=#jsonPath(payload, \"$.order.id\")'
         
         | split-order-question-links: splitter
             --splitter.expression='#jsonPath(payload, \"$.links.[*]\")'
