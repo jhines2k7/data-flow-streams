@@ -31,5 +31,5 @@ stream create
             --scriptable-transformer.language=js
             --scriptable-transformer.script='function addOrderIDToQuestion(r,d){var e=JSON.parse(r);return e.order_id=d,JSON.stringify(e)}addOrderIDToQuestion(payload,headers.order_id);'
         
-        > payloadforairtable
+        > :payloadforairtable
     "    
