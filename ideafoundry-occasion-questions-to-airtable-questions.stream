@@ -31,9 +31,5 @@ stream create
             --scriptable-transformer.language=js
             --scriptable-transformer.script='function addOrderIDToQuestion(r,d){var e=JSON.parse(r);return e.order_id=d,JSON.stringify(e)}addOrderIDToQuestion(payload,headers.order_id);'
         
-        | call-airtable-api: httpclient
-            --httpclient.url-expression='https://api.airtable.com/v0/app6whb4mczhoeDuH/Questions?api_key=${airtable.api.credentials}'
-            --httpclient.http-method=POST
-
-        | log
+        > payloadforairtable
     "    
